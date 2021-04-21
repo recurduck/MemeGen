@@ -5,11 +5,11 @@
 /* TYPOGRAPHY */
 @font-face {
     font-family: 'Holtwood';
-    src: url('/sprint2/font/Holtwood/HoltwoodOneSC-Regular.ttf');
+    src: url('/font/Holtwood/HoltwoodOneSC-Regular.ttf');
 }
 @font-face {
     font-family: 'Poppins';
-    src: url('/sprint2/font/Poppins/Poppins-Regular.ttf');
+    src: url('/font/Poppins/Poppins-Regular.ttf');
 }
 /* BASE */
 html {
@@ -177,7 +177,6 @@ input[type='color'] {
 /* Modal Edit */
 .modal-edit {
     position: absolute;
-    z-index: 1;
     flex-basis: 1;
     background-image:image();
 }
@@ -231,7 +230,11 @@ input[type='color'] {
     box-shadow: 1px 5px 0 rgba(92, 92, 92, 0.55), inset 0 5px 0 rgba(255, 255, 255, 0.58);
     background-color: #ffffff;
     padding-top: 8px; 
+    cursor: pointer;
     transition: background-color .1s, box-shadow .1s;
+}
+.btn:hover {
+    opacity: .8;
 }
 .btn:active {
     position: relative;
@@ -276,7 +279,7 @@ input[type='color'] {
     box-shadow: 1px 5px 0 rgba(92, 92, 92, 0.55), inset 0 5px 0 rgba(255, 255, 255, 0.58);
     border-radius: 10px;
     background-color: #ffffff;
-    background-image: url("/sprint2/img/icons/arrowDown.png");
+    background-image: url("/img/icons/arrowDown.png");
     background-repeat: no-repeat;
     background-position-x: 96%;
     background-position-y: 50%;
@@ -318,12 +321,26 @@ input[type='color'] {
     border: 2px solid #19a59f;
     background-color: white;
 }
+.btn-save {
+    width: 30%;
+    height: 51px;
+    border-radius: 15px;
+    box-shadow: 1px 5px 0 #015d33, inset 0 5px 0 rgba(255, 255, 255, 0.58);
+    background-image: linear-gradient(-38deg, #42eb5c 0%, #37b34a 100%);
+    cursor:copy;
+}
+.btn-save:active {
+    position: relative;
+    box-shadow: 1px 0px 0 #015d33, inset 0 5px 0 #ffffff;
+    top: 5px;
+}
 .btn-share {
-    width: 40%;
+    width: 30%;
     height: 51px;
     box-shadow: 1px 6px 0 #165c9c, inset 0 5px 0 #ffffff;
     border-radius: 15px;
     background-color: #1e7cd3;
+    cursor:alias;
 }
 .btn-share:active {
     position: relative;
@@ -331,7 +348,7 @@ input[type='color'] {
     top: 5px;
 }
 .btn-download {
-    width: 40%;
+    width: 30%;
     height: 51px;
     box-shadow: 1px 6px 0 #632687, inset 0 5px 0 #ffffff;
     border-radius: 15px;
@@ -352,6 +369,26 @@ input[type='color'] {
     top: 5px;
     opacity: .2;
 }
+
+/* My Memes */
+.btn-del {
+    width: 30px;
+    height: 30px;
+    padding: initial;
+    background: red;
+    align-self: center;
+    position: relative;
+    right: 50px;
+    bottom: 150px;
+    border-radius: 50%;
+    box-shadow: 1px 2px 1px 0px grey;
+}
+.btn-del:active {
+    position: relative;
+    box-shadow: 1px 0px 0px 0px #736c77, inset 0 0px 0 #ffffff;
+    bottom: 149px;
+}
+
 /*  Flex Helper  */
 .flex {
     display: flex;
@@ -443,6 +480,7 @@ button:focus, input:focus, select:focus{
         display: grid;
         justify-content: center;
         text-align: center;
+        z-index:1;
     }
 
     .hamburger {
