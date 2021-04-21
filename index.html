@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Sprint 2</title>
+</head>
+
+<body onload="init()">
+    <header class="header flex">
+        <div class="container nav-bar flex space-between align-center">
+            <div class="logo"><img src="img/logo/LOGO.png" alt="MEMEGEN" /></div>
+            <ul class="main-nav flex clean-list">
+                <li><a href="#" onclick="openGallery(false)">Gallery</a></li>
+                <li><a href="#" onclick="openGallery(true)">My MEME</a></li>
+                <li><a href="#">Language</a></il>
+                <li><a href="#">About</a></il>
+            </ul>
+            <span onclick="toggleMenu()"><img class="hamburger" src="./img/icons/menu.png" alt="" srcset=""></span>
+        </div>
+    </header>
+
+    <section class="main-content flex">
+
+        <div class="modal-edit flex space-between align-center wrap hidden">
+            <div class="card canvas-container">
+                <!-- Canvas Will be Rendered here -->
+            </div>
+            <div class="card tools">
+                <input class="container-tool text-input" type="text" name="" id="" value="Inever eat Falafel" oninput="onUpdateTxtLine(value)">
+
+                <div class="container-tool flex align-center space-around">
+                    <button onclick="onNextLine()" class="btn btn-lines"><img src="./img/icons/updown.svg" alt="^" srcset=""></button>
+                    <button onclick="onAddLine()" class="btn btn-add-line"><img src="./img/icons/+.png" alt="+"></button>
+                    <button onclick="onRemoveLine()" class="btn btn-del-line"><img src="./img/icons/trash.svg" alt="Del"></button>
+                </div>
+
+                <div class="container-tool style-tool flex wrap">
+                    <button class="btn" onclick="onIncreaseFont()"><img src="./img/icons/A+.png" alt="A+"></button>
+                    <button class="btn" onclick="onDecreaseFont()"><img src="./img/icons/A-.png" alt="A-"></button>
+                    <button class="btn"><img src="./img/icons/alignLeft.png" alt="" srcset=""></i></button>
+                    <button class="btn"><img src="./img/icons/alignCenter.png" alt="" srcset=""></i></button>
+                    <button class="btn"><img src="./img/icons/alignRight.png" alt="" srcset=""></button>
+                    <select class="fontfamily-select" onchange="onChangeFontFamily()">
+                        <option value="Impact" selected>Impact</option>
+                        <option value="Holtwood">Holtwood</option>
+                    </select>
+                    <button class="btn btn-underline" onclick="onUnderlineText()"><img src="./img/icons/s.png" alt="" srcset=""></button>
+                    <label class="btn btn-color"><input type="color" oninput="onChangeColor(value)">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="0 0 32 32">
+                        <path class="brush" d="M36.252.95c.935 2.363.995 4.639.172 6.41-.565 1.214-1.526 2.082-2.643 2.387a1.723 1.723 0 0 1-.043.082 79.983 79.983 0 0 1-2.404 3.95 7.307 7.307 0 0 1-.15 1.781c-.478 2.24-2.289 4.188-4.616 4.972a64.448 64.448 0 0 1-2.578 3.149c-3 3.41-4.054 3.606-4.401 3.67-.385.072-.755 0-1.046-.201-.919-.637-.542-1.988-.4-2.496.23-.824.669-1.903 1.306-3.204.3-.615.644-1.277 1.023-1.971a3.169 3.169 0 0 0-.964-.155c-1.115 0-1.885.657-2.06 1.758-.076.48-.028.958.022 1.463.05.49.1.997.026 1.504a7.378 7.378 0 0 1-.888 2.537C15.391 28.756 13.357 30 11.028 30c-.937 0-1.892-.2-2.84-.594-3.844-1.597-6.687-5.321-7.8-10.217-.084-.37-.156-.746-.213-1.118-.684-4.452.65-9.017 3.662-12.524C6.865 2.022 11.197 0 15.724 0c.18 0 .36.003.54.01 4.053.141 7.996 1.91 10.818 4.852a16.856 16.856 0 0 1 1.7 2.095l.03-.04c-.286-1.165.29-2.396 1.547-3.298.89-.638 1.713-.93 2.509-1.214.987-.351 1.839-.655 2.488-1.564a.515.515 0 0 1 .896.11zm-12.58 8.388a2.174 2.174 0 0 0 .283-1.652 2.174 2.174 0 0 0-.97-1.367 2.185 2.185 0 0 0-1.165-.338c-.758 0-1.452.383-1.856 1.024a2.173 2.173 0 0 0-.283 1.651c.13.57.474 1.056.97 1.368.35.22.753.337 1.165.337.759 0 1.453-.383 1.857-1.023zm2.845 3.967c-2.011 2.96-3.799 5.918-5.033 8.329-.69 1.348-1.186 2.487-1.445 3.316.672-.543 1.545-1.419 2.541-2.553 1.785-2.032 3.875-4.78 5.884-7.74a86.516 86.516 0 0 0 3.173-4.995 4.628 4.628 0 0 1-1.128-.578 6.073 6.073 0 0 1-.6-.473 97.714 97.714 0 0 0-3.392 4.694zm-19.45-.014a2.191 2.191 0 1 0-1.166-.337c.35.22.753.337 1.165.337zm-2.298 4.821a2.176 2.176 0 0 0-.283 1.652c.13.57.474 1.055.97 1.367.35.22.753.337 1.165.337a2.18 2.18 0 0 0 1.856-1.023 2.17 2.17 0 0 0 .283-1.651 2.177 2.177 0 0 0-.97-1.368 2.184 2.184 0 0 0-1.164-.337c-.76 0-1.453.382-1.857 1.023zM11.787 5.11a2.173 2.173 0 0 0-.283 1.651c.13.57.474 1.056.97 1.368.35.22.753.337 1.165.337a2.191 2.191 0 1 0-1.852-3.356z"></path>
+                        </svg>
+                    </label>
+                </div>
+
+                <div class="container-tool sticker-tool flex space-between">
+                    <button class="btn-stickers"><img src="./img/icons/arrowLeft.png" alt="<"></button>
+                    <span><!--TODO: render Stickers --></span>
+                    <button class="btn-stickers"><img src="./img/icons/arrowRight.png" alt=">"></button>
+                </div>
+                <div class="container-tool flex space-between">
+                    <button class="btn-share flex space-around align-center"><img src="./img/icons/share.png"><span>share</span></button>
+                    <a class="btn-download flex space-around align-center" onmouseover="onMakeLinkReady(this)" href="#" download=""><img src="./img/icons/download.png"><span>download</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container container-gallery flex">
+            <div class="gallery-menu flex space-between align-center">
+                <div class="input-container">
+                    <input class="search-input" type="text" name="img-search" id="img-search" placeholder="Search">
+                    <img src="./img/icons/search.png" class="icon">
+                </div>
+                <div class="tags">
+                    <span>happy</span>
+                    <!-- TODO : Need render must used tags -->
+                </div>
+                <button class="btn btn-more">More</button>
+            </div>
+            <div class="gallery flex wrap space-between">
+
+            </div>
+
+        </div>
+    </section>
+
+    <script src="js/util-service.js"></script>
+    <script src="js/storage-service.js"></script>
+    <script src="js/meme-service.js"></script>
+    <script src="js/meme-controler.js"></script>
+</body>
+
+</html>
