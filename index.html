@@ -15,7 +15,7 @@
     <header class="header flex">
         <div class="container nav-bar flex space-between align-center">
             <div class="logo"><img src="img/logo/LOGO.png" alt="MEMEGEN" /></div>
-            <ul class="main-nav flex clean-list">
+            <ul class="main-nav flex clean-list" onclick="toggleMenu()">
                 <li><a href="#" onclick="openGallery(false)">Gallery</a></li>
                 <li><a href="#" onclick="openGallery(true)">My MEME</a></li>
                 <li><a href="#">Language</a></il>
@@ -43,9 +43,9 @@
                 <div class="container-tool style-tool flex wrap">
                     <button class="btn" onclick="onIncreaseFont()"><img src="./img/icons/A+.png" alt="A+"></button>
                     <button class="btn" onclick="onDecreaseFont()"><img src="./img/icons/A-.png" alt="A-"></button>
-                    <button class="btn"><img src="./img/icons/alignLeft.png" alt="" srcset=""></i></button>
-                    <button class="btn"><img src="./img/icons/alignCenter.png" alt="" srcset=""></i></button>
-                    <button class="btn"><img src="./img/icons/alignRight.png" alt="" srcset=""></button>
+                    <button class="btn txt-align-left" onclick="onAlignLeft(this)"><img src="./img/icons/alignLeft.png" alt="" srcset=""></i></button>
+                    <button class="btn txt-align-center" onclick="onAlignCenter(this)"><img src="./img/icons/alignCenter.png" alt="" srcset=""></i></button>
+                    <button class="btn txt-align-right" onclick="onAlignRight(this)"><img src="./img/icons/alignRight.png" alt="" srcset=""></button>
                     <select class="fontfamily-select" onchange="onChangeFontFamily()">
                         <option value="Impact" selected>Impact</option>
                         <option value="Holtwood">Holtwood</option>
@@ -64,8 +64,9 @@
                     <button class="btn-stickers"><img src="./img/icons/arrowRight.png" alt=">"></button>
                 </div>
                 <div class="container-tool flex space-between">
-                    <button class="btn-share flex space-around align-center"><img src="./img/icons/share.png"><span>share</span></button>
-                    <a class="btn-download flex space-around align-center" onmouseover="onMakeLinkReady(this)" href="#" download=""><img src="./img/icons/download.png"><span>download</span></a>
+                    <button class="btn-save flex space-around align-center" onmouseover="finalizeMeme()" onclick="onSaveMeme()"><span>💾</span><span>Save</span></button>
+                    <button class="btn-share flex space-around align-center"><img src="./img/icons/share.png"><span>Share</span></button>
+                    <a class="btn-download flex space-around align-center" onmouseover="onMakeLinkReady(this)" href="#" download=""><img src="./img/icons/download.png"><span>Download</span></a>
                 </div>
             </div>
         </div>
@@ -91,8 +92,10 @@
 
     <script src="js/util-service.js"></script>
     <script src="js/storage-service.js"></script>
+    <script src="js/memes-example.js"></script>
     <script src="js/meme-service.js"></script>
     <script src="js/meme-controler.js"></script>
+    <!-- <script src="js/dragDrop.js"></script> -->
 </body>
 
 </html>

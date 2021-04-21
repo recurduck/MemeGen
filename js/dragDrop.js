@@ -10,7 +10,7 @@ function onInit() {
     resizeCanvas()
     gCircle = createCircle()
     addListeners()
-    renderCanvas()
+    // renderCanvas()
 }
 
 function createCircle() {
@@ -110,13 +110,13 @@ function drawArc(x, y, size = 60, color = 'blue') {
 
 }
 
-function renderCanvas() {
-    gCtx.save()
-    gCtx.fillStyle = "#ede5ff"
-    gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
-    gCtx.restore()
-    if (gCircle) renderCircle()
-}
+// function renderCanvas() {
+//     gCtx.save()
+//     gCtx.fillStyle = "#ede5ff"
+//     gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height)
+//     gCtx.restore()
+//     if (gCircle) renderCircle()
+// }
 
 function renderCircle() {
     const { pos, color, size } = gCircle

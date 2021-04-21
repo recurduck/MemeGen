@@ -1,6 +1,6 @@
 'use strict'
 
-const KEY = 'books';
+const KEY = 'memes';
 
 const IMAGESFILE = 18
 
@@ -18,10 +18,11 @@ var gMeme = {
         color: 'red',
         family: 'Impact',
         underline: false,
-        x: 50,
+        x: 25,
         y: 80,
         // endX: 50 + gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
         // endY: 50 + gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
+        isOnFocus: false
     },
     {
         txt: 'but I like it!',
@@ -30,8 +31,9 @@ var gMeme = {
         color: 'white',
         family: 'Impact',
         underline: false,
-        x: 50,
-        y: 420
+        x: 25,
+        y: 450,
+        isOnFocus: false
     }
     ]
 }
@@ -42,14 +44,32 @@ function changeFontFamily(fontFamily) {
     drawDetails();
 }
 
+function alignLeft() {
+    gMeme.lines[gMeme.selectedLineIdx].align = 'left';
+    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 5/100
+    drawDetails();
+}
+function alignCenter() {
+    gMeme.lines[gMeme.selectedLineIdx].align = 'center';
+    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 50/100
+    drawDetails();
+}
+function alignRight() {
+    gMeme.lines[gMeme.selectedLineIdx].align = 'right'; 
+    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 95/100
+    drawDetails();
+}
+
 function increaseFont() {
     gMeme.lines[gMeme.selectedLineIdx].size++;
     drawDetails();
 }
 
 function decreaseFont() {
-    gMeme.lines[gMeme.selectedLineIdx].size--;
-    drawDetails();
+    if (gMeme.lines[gMeme.selectedLineIdx].size > 0) {
+        gMeme.lines[gMeme.selectedLineIdx].size--;
+        drawDetails();
+    }
 }
 
 function updateTxtLine(val) {
@@ -58,7 +78,9 @@ function updateTxtLine(val) {
 }
 
 function nextLine() {
+    gMeme.lines[gMeme.selectedLineIdx].isOnFocus = false
     gMeme.selectedLineIdx = (gMeme.selectedLineIdx === gMeme.lines.length - 1) ? 0 : gMeme.selectedLineIdx + 1
+    gMeme.lines[gMeme.selectedLineIdx].isOnFocus = true
 }
 
 function addNewLine() {
@@ -107,6 +129,7 @@ function setImgCanvBg() {
 
 function drawText() {
     gMeme.lines.forEach(line => {
+        gCtx.textAlign = line.align;
         gCtx.fillStyle = line.color;
         gCtx.lineWidth = 1;
         gCtx.strokeStyle = 'black';
@@ -115,7 +138,19 @@ function drawText() {
         gCtx.strokeText(line.txt, line.x, line.y);
         if (line.underline) {
             let space = gMeme.lines[gMeme.selectedLineIdx].size * 0.15;
-            drawLine(line.x, line.y + space, line.x + gCtx.measureText(line.txt).width, line.y + space, line.color)
+            switch(gCtx.textAlign) {
+                case 'left': 
+                    drawLine(line.x, line.y + space, line.x + gCtx.measureText(line.txt).width, line.y + space, line.color);
+                    break;
+                case 'center':
+                    drawLine(line.x-gCtx.measureText(line.txt).width/2, line.y + space, line.x + gCtx.measureText(line.txt).width/2, line.y + space, line.color);
+                    break;
+                case 'right':
+                    drawLine(line.x, line.y + space, line.x - gCtx.measureText(line.txt).width, line.y + space, line.color);
+            }
+        }
+        if(line.isOnFocus) {
+            
         }
     })
 }
@@ -142,14 +177,24 @@ function drawRect(x = 50, y = 20) {
     gCtx.stroke()
 }
 
-function convertImageToDownload(elLink) {
+function saveMeme() {
+    let imgData = gCanvas.toDataURL()
+    var gMemesIdArr = getIds(gMemes)
+    gMemes.push({id: generateId(gMemesIdArr),url: imgData})
+    _saveMemesToStorage()
+}
+
+function finalizeMeme() {
     const elImg = new Image()
     elImg.src = `img/memes/${gMeme.selectedImgId}.jpg`;
     elImg.onload = () => {
         gCtx.drawImage(elImg, 0, 0, gCanvas.width, gCanvas.height);
         drawDetails(false);
-        console.log('first');
     }
+}
+
+function convertImageToDownload(elLink) {
+    finalizeMeme();
     memeValforDownload(elLink)
 }
 
@@ -176,16 +221,7 @@ function createNewLine() {
 }
 // return My Memes
 function getMyImgs() {
-    let imgs = []
-    for (var i = 1; i <= gMemes.length; i++) {
-        let img = {
-            id: gMemes[i].selectedImgId,
-            url: `img/memes/${i}.jpg`,
-            keywords: ['happy', 'funny']
-        }
-        imgs.push(img);
-    }
-    return imgs;
+    return gMemes;
 }
 // return all Imgs
 function getImgs() {
@@ -211,34 +247,27 @@ function memeValforDownload(elLink) {
     elLink.download = `MEME-${makeId(4)}`;
 }
 
-function _saveMemesToStorage() {
-    saveToStorage(KEY, gMemes)
+function getMemeIndexByID(memeId) {
+    return gMemes.findIndex(meme => meme.id === memeId)
 }
 
-function _createMeme(imgId) {
-    return {
-        selectedImgId: imgId,
-        selectedLineIdx: 0,
-        lines: [{
-            txt: 'Example',
-            size: 50,
-            align: 'left',
-            color: 'red',
-            family: 'Impact',
-            underline: false,
-            x: 50,
-            y: 80,
-        },]
-    }
+function deleteMeme(memeId) {
+    let memeIdx = getMemeIndexByID(memeId);
+    console.log('memeIdx:', memeIdx)
+    if(memeIdx > -1) {
+        gMemes.splice(memeIdx,1)
+        _saveMemesToStorage();
+    }    
+}
+
+function _saveMemesToStorage() {
+    saveToStorage(KEY, gMemes)
 }
 
 function _createMemes() {
     var memes = loadFromStorage(KEY)
     if (!memes || !memes.length) {
-        memes = []
-        for (var i = 1; i < 4; i++) {
-            memes.push(_createMeme(i))
-        }
+        memes = gMemeExamples;
     }
     gMemes = memes;
     _saveMemesToStorage();

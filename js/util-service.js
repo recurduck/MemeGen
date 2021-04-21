@@ -1,6 +1,6 @@
 'use strict'
 
-var _gID = [];
+var idArr = [];
 
 function makeId(length = 6) {
     var txt = '';
@@ -39,13 +39,13 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 }
 
-function generateId() {
-    if (_gID.length === _gID[_gID.length] || _gID.length === 0) {
-        _gID.push(_gID.length + 1)
-        return _gID.length
+function generateId(idArr) {
+    if (idArr.length === idArr[idArr.length] || idArr.length === 0) {
+        idArr.push(idArr.length + 1)
+        return idArr.length
     } else {
-        var missingNun = getMissingNo(_gID, _gID.length);
-        _gID.splice(missingNun - 1, 0, missingNun);
+        var missingNun = getMissingNo(idArr, idArr.length);
+        idArr.splice(missingNun - 1, 0, missingNun);
         return missingNun;
     } 
 }
@@ -55,4 +55,12 @@ function getMissingNo(arr, length) {
     for (var i = 0; i < length; i++)
         total -= arr[i];
     return total;
+}
+
+function getIds(objArr) {
+    let arr = [];
+    for(var i = 0; i < objArr.length; i++){
+        arr.push(objArr[i].id)
+    }
+    return arr;
 }
