@@ -236,7 +236,7 @@ input[type='color'] {
     cursor: pointer;
     transition: background-color .1s, box-shadow .1s;
 }
-.btn:hover {
+.btn:hover, .btn-save:hover, .btn-share:hover, .btn-download:hover {
     opacity: .8;
 }
 .btn:active {

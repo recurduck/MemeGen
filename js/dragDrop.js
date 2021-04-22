@@ -1,21 +1,16 @@
-var gElCanvas
-var gCtx
 var gCircle
 var gStartPos
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
 
-function onInit() {
-    gElCanvas = document.querySelector('canvas')
-    gCtx = gElCanvas.getContext('2d')
-    resizeCanvas()
-    gCircle = createCircle()
+function editorInit() {
+    gCircle = getCurrLine()
     addListeners()
     // renderCanvas()
 }
 
 function createCircle() {
     return {
-        pos: { x: gElCanvas.width / 2, y: gElCanvas.height / 2 },
+        pos: { x: gCanvas.width / 2, y: gCanvas.height / 2 },
         size: 60,
         color: 'blue',
         isDragging: false
@@ -31,16 +26,17 @@ function addListeners() {
     })
 }
 
+
 function addMouseListeners() {
-    gElCanvas.addEventListener('mousemove', onMove)
-    gElCanvas.addEventListener('mousedown', onDown)
-    gElCanvas.addEventListener('mouseup', onUp)
+    gCanvas.addEventListener('mousemove', onMove)
+    gCanvas.addEventListener('mousedown', onDown)
+    gCanvas.addEventListener('mouseup', onUp)
 }
 
 function addTouchListeners() {
-    gElCanvas.addEventListener('touchmove', onMove)
-    gElCanvas.addEventListener('touchstart', onDown)
-    gElCanvas.addEventListener('touchend', onUp)
+    gCanvas.addEventListener('touchmove', onMove)
+    gCanvas.addEventListener('touchstart', onDown)
+    gCanvas.addEventListener('touchend', onUp)
 }
 
 function onDown(ev) {
@@ -73,8 +69,8 @@ function onUp() {
 
 function resizeCanvas() {
     const elContainer = document.querySelector('.canvas-container')
-    gElCanvas.width = elContainer.offsetWidth
-    gElCanvas.height = elContainer.offsetHeight
+    gCanvas.width = elContainer.offsetWidth
+    gCanvas.height = elContainer.offsetHeight
 }
 
 function getEvPos(ev) {
@@ -94,7 +90,7 @@ function getEvPos(ev) {
 }
 
 function isCirlceClicked(clickedPos) {
-    const { pos } = gCircle
+    const  pos  = gCircle
     const distance = Math.sqrt((pos.x - clickedPos.x) ** 2 + (pos.y - clickedPos.y) ** 2)
     return distance <= gCircle.size
 }
