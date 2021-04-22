@@ -35,3 +35,12 @@ body.he > * , body.he button {
 body.he .container-tool {
     direction: ltr;
 }
+body.he .icon {
+    left:auto;
+    right: calc(40% - (50px));
+}
+@media screen and (max-width: 425px) {
+    body.he .icon {
+        right: calc(100% - (100px));
+    }
+}

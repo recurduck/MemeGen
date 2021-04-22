@@ -145,7 +145,7 @@ function openGallery(isMyGallery) {
 function openMemeEditor(elImg) {
     setNewImg(elImg.dataset.id)
     renderCanvas(elImg.dataset.id);
-    editorInit();
+    // editorInit();
     elFadeIn('.modal-edit');
     updateEditorPerLine(getCurrLine())
 }
