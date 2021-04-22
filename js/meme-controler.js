@@ -1,9 +1,11 @@
 'use strict'
 
+var gClientScreen;
 var gCanvas;
 var gCtx;
 
 function init() {
+    doTrans();
     renderImg();
 }
 
@@ -156,7 +158,7 @@ function renderImg(isMyGallery) {
     if (isMyGallery) {
         let imgs = getMyImgs()
         let galleryImgs = imgs.map(img => {
-            return `<div><img class="card" src="${img.url}" alt="Err" data-id="${img.id}" onclick="onOpenNewTab(${img.id})"/><button class="btn-del" onclick="onDelMeme(this)">X</button></div>`
+            return `<div class="meme-img"><img class="card" src="${img.url}" alt="Err" data-id="${img.id}" onclick="onOpenNewTab(${img.id})"/><button class="btn-del" onclick="onDelMeme(this)">X</button></div>`
         })
         document.querySelector('.gallery').innerHTML = galleryImgs.join('');
     } else {

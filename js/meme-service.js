@@ -22,7 +22,7 @@ var gMeme = {
         y: 80,
         // endX: 50 + gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
         // endY: 50 + gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
-        isOnFocus: false
+        isOnFocus: true
     },
     {
         txt: 'but I like it!',
@@ -46,17 +46,17 @@ function changeFontFamily(fontFamily) {
 
 function alignLeft() {
     gMeme.lines[gMeme.selectedLineIdx].align = 'left';
-    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 5/100
+    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 5 / 100
     drawDetails();
 }
 function alignCenter() {
     gMeme.lines[gMeme.selectedLineIdx].align = 'center';
-    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 50/100
+    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 50 / 100
     drawDetails();
 }
 function alignRight() {
-    gMeme.lines[gMeme.selectedLineIdx].align = 'right'; 
-    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 95/100
+    gMeme.lines[gMeme.selectedLineIdx].align = 'right';
+    gMeme.lines[gMeme.selectedLineIdx].x = gCanvas.width * 95 / 100
     drawDetails();
 }
 
@@ -81,6 +81,7 @@ function nextLine() {
     gMeme.lines[gMeme.selectedLineIdx].isOnFocus = false
     gMeme.selectedLineIdx = (gMeme.selectedLineIdx === gMeme.lines.length - 1) ? 0 : gMeme.selectedLineIdx + 1
     gMeme.lines[gMeme.selectedLineIdx].isOnFocus = true
+    drawDetails();
 }
 
 function addNewLine() {
@@ -119,15 +120,15 @@ function getLinesCount() {
 }
 
 function drawDetails(isEditing = true) {
-    if(isEditing) clearCanvas();
-    drawText();
+    if (isEditing) clearCanvas();
+    drawText(isEditing);
 }
 
 function setImgCanvBg() {
     gCanvas.style = `background-image: url("img/memes/${gMeme.selectedImgId}.jpg");background-size: ${gCanvas.width}px ${gCanvas.height}px;`
 }
 
-function drawText() {
+function drawText(isEditing = true) {
     gMeme.lines.forEach(line => {
         gCtx.textAlign = line.align;
         gCtx.fillStyle = line.color;
@@ -138,19 +139,19 @@ function drawText() {
         gCtx.strokeText(line.txt, line.x, line.y);
         if (line.underline) {
             let space = gMeme.lines[gMeme.selectedLineIdx].size * 0.15;
-            switch(gCtx.textAlign) {
-                case 'left': 
+            switch (gCtx.textAlign) {
+                case 'left':
                     drawLine(line.x, line.y + space, line.x + gCtx.measureText(line.txt).width, line.y + space, line.color);
                     break;
                 case 'center':
-                    drawLine(line.x-gCtx.measureText(line.txt).width/2, line.y + space, line.x + gCtx.measureText(line.txt).width/2, line.y + space, line.color);
+                    drawLine(line.x - gCtx.measureText(line.txt).width / 2, line.y + space, line.x + gCtx.measureText(line.txt).width / 2, line.y + space, line.color);
                     break;
                 case 'right':
                     drawLine(line.x, line.y + space, line.x - gCtx.measureText(line.txt).width, line.y + space, line.color);
             }
         }
-        if(line.isOnFocus) {
-            
+        if (line.isOnFocus && isEditing) {
+            drawRect(line.y);
         }
     })
 }
@@ -167,12 +168,11 @@ function drawLine(x, y, xEnd, yEnd, color = 'black') {
 
 }
 
-function drawRect(x = 50, y = 20) {
+function drawRect(y, x = 15) {
+    console.log(x, y-60, gCanvas.width - 20, y)
     gCtx.beginPath()
     gCtx.lineWidth = 4;
-    gCtx.rect(x-15, y-15, gCanvas.width - 100, 120)
-    gCtx.fillStyle = 'transparent'
-    gCtx.fillRect(x, y, 150, 150)
+    gCtx.rect(x, y-60, gCanvas.width - 20, y)
     gCtx.strokeStyle = 'black'
     gCtx.stroke()
 }
@@ -180,7 +180,7 @@ function drawRect(x = 50, y = 20) {
 function saveMeme() {
     let imgData = gCanvas.toDataURL()
     var gMemesIdArr = getIds(gMemes)
-    gMemes.push({id: generateId(gMemesIdArr),url: imgData})
+    gMemes.push({ id: generateId(gMemesIdArr), url: imgData })
     _saveMemesToStorage()
 }
 
@@ -254,10 +254,10 @@ function getMemeIndexByID(memeId) {
 function deleteMeme(memeId) {
     let memeIdx = getMemeIndexByID(memeId);
     console.log('memeIdx:', memeIdx)
-    if(memeIdx > -1) {
-        gMemes.splice(memeIdx,1)
+    if (memeIdx > -1) {
+        gMemes.splice(memeIdx, 1)
         _saveMemesToStorage();
-    }    
+    }
 }
 
 function _saveMemesToStorage() {

@@ -1,0 +1,37 @@
+/* TYPOGRAPHY */
+@font-face {
+    font-family: 'Holtwood';
+    src: url('/font/Holtwood/HoltwoodOneSC-Regular.ttf');
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url('/font/Poppins/Poppins-Regular.ttf');
+}
+@font-face {
+    font-family: 'MashanZheng';
+    src: url('/font/Ma_Shan_Zheng/MaShanZheng-Regular.ttf');
+}
+@font-face {
+    font-family: 'Varela';
+    src: url('/font/Varela/VarelaRound-Regular.ttf');
+}
+
+html {
+    font-family: 'Poppins', 'Arial Narrow Bold', sans-serif;
+}
+
+body.en > * body.zh button {
+    font-family: 'Poppins', 'Arial Narrow Bold', sans-serif;
+}
+
+body.zh > * , body.zh button {
+    font-family: 'MashanZheng', 'Arial Narrow Bold', sans-serif;
+}
+
+body.he > * , body.he button {
+    font-family: 'Valera', 'Arial Narrow Bold', sans-serif;
+    direction:rtl;
+}
+body.he .container-tool {
+    direction: ltr;
+}
