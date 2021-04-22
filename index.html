@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/font.css">
     <link rel="stylesheet" href="css/main.css">
     <title>Sprint 2</title>
 </head>
@@ -16,10 +17,10 @@
         <div class="container nav-bar flex space-between align-center">
             <div class="logo"><img src="img/logo/LOGO.png" alt="MEMEGEN" /></div>
             <ul class="main-nav flex clean-list" onclick="toggleMenu()">
-                <li><a href="#" onclick="openGallery(false)">Gallery</a></li>
-                <li><a href="#" onclick="openGallery(true)">My MEME</a></li>
-                <li><a href="#">Language</a></il>
-                <li><a href="#">About</a></il>
+                <li><a href="#" onclick="openGallery(false)" data-trans="gallery"></a></li>
+                <li><a href="#" onclick="openGallery(true)" data-trans="my-memes"></a></li>
+                <li><a href="#" data-trans="about"></a></il>
+                <li><a href="#" data-trans="language" onclick="nextLanguage()"></a></il>
             </ul>
             <span onclick="toggleMenu()"><img class="hamburger" src="./img/icons/menu.png" alt="" srcset=""></span>
         </div>
@@ -64,9 +65,9 @@
                     <button class="btn-stickers"><img src="./img/icons/arrowRight.png" alt=">"></button>
                 </div>
                 <div class="container-tool flex space-between">
-                    <button class="btn-save flex space-around align-center" onmouseover="finalizeMeme()" onclick="onSaveMeme()"><span>💾</span><span>Save</span></button>
-                    <button class="btn-share flex space-around align-center"><img src="./img/icons/share.png"><span>Share</span></button>
-                    <a class="btn-download flex space-around align-center" onmouseover="onMakeLinkReady(this)" href="#" download=""><img src="./img/icons/download.png"><span>Download</span></a>
+                    <button class="btn-save flex space-around align-center" onmouseover="finalizeMeme()" onclick="onSaveMeme()"><span>💾</span><span data-trans="save"></span></button>
+                    <button class="btn-share flex space-around align-center"><img src="./img/icons/share.png"><span data-trans="share"></span></button>
+                    <a class="btn-download flex space-around align-center" onmouseover="onMakeLinkReady(this)" href="#" download=""><img src="./img/icons/download.png"><span data-trans="download"></span></a>
                 </div>
             </div>
         </div>
@@ -78,10 +79,10 @@
                     <img src="./img/icons/search.png" class="icon">
                 </div>
                 <div class="tags">
-                    <span>happy</span>
+                    <span data-trans="happy">happy</span>
                     <!-- TODO : Need render must used tags -->
                 </div>
-                <button class="btn btn-more">More</button>
+                <button class="btn-more" data-trans="more">More</button>
             </div>
             <div class="gallery flex wrap space-between">
 
@@ -91,6 +92,7 @@
     </section>
 
     <script src="js/util-service.js"></script>
+    <script src="js/i18n-service.js"></script>
     <script src="js/storage-service.js"></script>
     <script src="js/memes-example.js"></script>
     <script src="js/meme-service.js"></script>
