@@ -22,7 +22,8 @@ var gMeme = {
         y: 80,
         // endX: 50 + gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
         // endY: 50 + gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
-        isOnFocus: true
+        isOnFocus: true,
+        isDragging: false
     },
     {
         txt: 'but I like it!',
@@ -33,7 +34,8 @@ var gMeme = {
         underline: false,
         x: 25,
         y: 450,
-        isOnFocus: false
+        isOnFocus: false,
+        isDragging: false
     }
     ]
 }
@@ -86,14 +88,18 @@ function nextLine() {
 
 function addNewLine() {
     gMeme.lines.push(createNewLine())
+    gMeme.lines[gMeme.selectedLineIdx].isOnFocus = false
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
+    gMeme.lines[gMeme.selectedLineIdx].isOnFocus = true
     drawDetails();
 }
 
 function removeLine() {
     if (gMeme.lines.length > 1) {
+        gMeme.lines[gMeme.selectedLineIdx].isOnFocus = false
         gMeme.lines.splice(gMeme.selectedLineIdx, 1)
         gMeme.selectedLineIdx = gMeme.lines.length - 1;
+        gMeme.lines[gMeme.selectedLineIdx].isOnFocus = true
     } else {
         gMeme.lines[gMeme.selectedLineIdx].txt = '';
         drawDetails();
@@ -169,10 +175,9 @@ function drawLine(x, y, xEnd, yEnd, color = 'black') {
 }
 
 function drawRect(y, x = 15) {
-    console.log(x, y-60, gCanvas.width - 20, y)
     gCtx.beginPath()
     gCtx.lineWidth = 4;
-    gCtx.rect(x, y-60, gCanvas.width - 20, y)
+    gCtx.rect(x, y-60, gCanvas.width - 20, 70)
     gCtx.strokeStyle = 'black'
     gCtx.stroke()
 }
@@ -216,7 +221,9 @@ function createNewLine() {
         family: gMeme.lines[gMeme.selectedLineIdx].family,
         underline: gMeme.lines[gMeme.selectedLineIdx].underline,
         x: 50,
-        y: gCanvas.height / 2
+        y: gCanvas.height / 2,
+        isOnFocus: false,
+        isDragging: false
     }
 }
 // return My Memes
