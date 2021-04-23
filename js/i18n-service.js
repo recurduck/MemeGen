@@ -42,6 +42,11 @@ var gTrans = {
         zh: '保存',
         he: 'שמור',
     },
+    'publish': {
+        en: 'Publish',
+        zh: '发表',
+        he: 'פרסם'
+    },
     'share': {
         en: 'Share',
         zh: '分享',
@@ -57,6 +62,16 @@ var gTrans = {
         zh: '关',
         he: 'סגור'
     },
+    'about-des1': {
+        en: 'Welcome to my Meme Generator v1.0 in this Generator you can choose an image from our stock or upload an image by yourself and edit it as a meme.',
+        zh: '欢迎我的模因v1.0, ',
+        he: 'ברוכים הבאים לגנרטור הממים שלי גרסה 1.0, בגנרטור הזה אתה יכול לבחור תמונה מן המאגר או להעלות תמונה בעצמך ולערוך אותה לממי בעצמך. '
+    },
+    'about-des2': {
+        en: 'Inside the editor there will be always a focus on only one line. you can switch the focus by presing on one of them or just press on the change line button. ther is an option to add new lines or delete the focused line. For each line you have a small controller that control the size of the font, alignment, font Family, underline, and the sentence color.',
+        zh: '',
+        he: 'בתוך העורך תמיד יהיה פוקוס רק על אחת מן השורות, ניתן להחליף בין השורות בעזרת לחיצה ישירה על השורות או בעזרת לחיצה על הכפתור הייעודי.  ישנה אפשרות להוסיך ולמחוק שורות. לכל שורה יש לוח שליטה קטן שמאפשר לשלוט על גודל הגופן, יישור, סוג גופן, קו תחתון וצבע.'
+    }
 }
 
 var gLangKey = 1

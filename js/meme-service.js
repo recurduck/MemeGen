@@ -86,6 +86,15 @@ function nextLine() {
     drawDetails();
 }
 
+function forceFocus(forcedLine) {
+    let newFocusedLineIdx = gMeme.lines.findIndex(line => line === forcedLine)
+    gMeme.lines[gMeme.selectedLineIdx].isOnFocus = false
+    console.log('newFocusedLine:', newFocusedLineIdx)
+    gMeme.selectedLineIdx = newFocusedLineIdx
+    forcedLine.isOnFocus = true
+    drawDetails();
+}
+
 function addNewLine() {
     gMeme.lines.push(createNewLine())
     gMeme.lines[gMeme.selectedLineIdx].isOnFocus = false
@@ -177,7 +186,7 @@ function drawLine(x, y, xEnd, yEnd, color = 'black') {
 function drawRect(y, x = 15) {
     gCtx.beginPath()
     gCtx.lineWidth = 4;
-    gCtx.rect(x, y-60, gCanvas.width - 20, 70)
+    gCtx.rect(x, y - gMeme.lines[gMeme.selectedLineIdx].size, gCanvas.width - 20, gMeme.lines[gMeme.selectedLineIdx].size * 1.3)
     gCtx.strokeStyle = 'black'
     gCtx.stroke()
 }
@@ -254,6 +263,10 @@ function memeValforDownload(elLink) {
     elLink.download = `MEME-${makeId(4)}`;
 }
 
+function getTextWidth(line) {
+    return gCtx.measureText(line.txt).width;
+}
+
 function getMemeIndexByID(memeId) {
     return gMemes.findIndex(meme => meme.id === memeId)
 }
@@ -279,3 +292,39 @@ function _createMemes() {
     gMemes = memes;
     _saveMemesToStorage();
 }
+
+// on submit call to this function
+function uploadImg(elForm, ev) {
+    ev.preventDefault();
+    document.getElementById('imgData').value = gCanvas.toDataURL("image/jpeg");
+
+    // A function to be called if request succeeds
+    function onSuccess(uploadedImgUrl) {
+        uploadedImgUrl = encodeURIComponent(uploadedImgUrl)
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}`)
+        document.querySelector('body').style = 'cursor: auto';
+    }
+    let inputVal = elForm.querySelector('input').value
+    doUploadImg(elForm, onSuccess, inputVal);
+}
+
+function doUploadImg(elForm, onSuccess) {
+    var formData = new FormData(elForm);
+    console.log('doUploadImg -> formData', formData)
+    document.querySelector('body').style = 'cursor: progress';
+    fetch('//ca-upload.com/here/upload.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(function (res) {
+            return res.text()
+        })
+        .then(onSuccess)
+        .catch(function (err) {
+            console.error(err)
+        })
+}
+
+
+
+

@@ -76,9 +76,11 @@ input[type='color'] {
 .logo img {
     width: 150px;
 }
-
-.hamburger {
+.nav-bar > span {
     display:none;
+}
+.hamburger {
+    display:inline-block;
     width: 55px;
     position: relative;
     top: 5px;
@@ -164,12 +166,14 @@ input[type='color'] {
     flex-grow: 1;
     height: 400px;
     overflow: auto;
+    justify-content: center;
 }
 .gallery .card {
     width: 200px;
     height: 173px;
     background-color: black;
     margin: 10px;
+    margin-right: 15px;
     border-radius: 10px;
     transition: .3s;
     
@@ -200,6 +204,10 @@ input[type='color'] {
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 30px;
+    cursor: grab;
+}
+#my-meme:active {
+    cursor: grabbing;
 }
 
 .tools {
@@ -337,8 +345,13 @@ input[type='color'] {
     box-shadow: 1px 0px 0 #015d33, inset 0 5px 0 #ffffff;
     top: 5px;
 }
-.btn-share {
+.share-form {
     width: 30%;
+    height: 51px;
+
+}
+.btn-share {
+    width: 100%;
     height: 51px;
     box-shadow: 1px 6px 0 #165c9c, inset 0 5px 0 #ffffff;
     border-radius: 15px;
@@ -380,16 +393,18 @@ input[type='color'] {
     padding: initial;
     background: red;
     align-self: center;
-    position: relative;
-    right: 50px;
+    position:relative;
+    right: 60px;
     bottom: 150px;
     border-radius: 50%;
     box-shadow: 1px 2px 1px 0px grey;
 }
 .btn-del:active {
-    position: relative;
     box-shadow: 1px 0px 0px 0px #736c77, inset 0 0px 0 #ffffff;
     bottom: 149px;
+}
+.btn-del:hover {
+    visibility: visible;
 }
 
 /*  Flex Helper  */
@@ -413,6 +428,22 @@ input[type='color'] {
 }
 .wrap {
     flex-wrap: wrap;
+}
+
+/* Modal */
+.modal-container {
+    transition: 1s;
+    top: -96%;
+    position: absolute;
+    height: 95vh;
+    width: 98vw;
+    background: #0c98b9;
+    z-index: 1;
+    padding: 5% 20% 5% 20%;
+}
+.modal-showed {
+    top: 0%;
+    background: #020302d4;
 }
 
 /*  List Helper     */
@@ -496,8 +527,8 @@ button:focus, input:focus, select:focus{
         z-index:1;
     }
 
-    .hamburger {
-        display:inline-flex;
+    .nav-bar > span {
+        display:block;
     }
     ::-webkit-scrollbar {
         width: 0px;
@@ -553,7 +584,7 @@ button:focus, input:focus, select:focus{
     .gallery .card {
         width: 8rem;
         height: 8rem;
-        margin: 10px 0px 10px 0px;
+        margin: 10px;
     }
     .modal-edit > .card:first-of-type{
         max-width: 320px;
@@ -589,8 +620,8 @@ button:focus, input:focus, select:focus{
     }
     /*my MEME*/
     .btn-del {
-        right: 0px;
-        bottom: 148px;
+        left: 100px;
+        bottom: 142px;
     }
     .meme-img {
         width: 128px;

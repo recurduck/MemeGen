@@ -1,19 +1,19 @@
 /* TYPOGRAPHY */
 @font-face {
     font-family: 'Holtwood';
-    src: url('/font/Holtwood/HoltwoodOneSC-Regular.ttf');
+    src: url('../font/Holtwood/HoltwoodOneSC-Regular.ttf');
 }
 @font-face {
     font-family: 'Poppins';
-    src: url('/font/Poppins/Poppins-Regular.ttf');
+    src: url('../font/Poppins/Poppins-Regular.ttf');
 }
 @font-face {
     font-family: 'MashanZheng';
-    src: url('/font/Ma_Shan_Zheng/MaShanZheng-Regular.ttf');
+    src: url('../font/Ma_Shan_Zheng/MaShanZheng-Regular.ttf');
 }
 @font-face {
     font-family: 'Varela';
-    src: url('/font/Varela/VarelaRound-Regular.ttf');
+    src: url('../font/Varela/VarelaRound-Regular.ttf');
 }
 
 html {

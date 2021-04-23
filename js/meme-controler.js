@@ -122,7 +122,7 @@ function updateEditorPerLine(line) {
 }
 
 function renderCanvas() {
-    var strHtml = `<canvas id="my-meme" onclick="">
+    var strHtml = `<canvas id="my-meme" onclick="canvasClicked(event)">
     </canvas>`;
     document.querySelector('.canvas-container').innerHTML = strHtml;
     gCanvas = document.getElementById('my-meme');
@@ -131,6 +131,25 @@ function renderCanvas() {
     gCanvas.height = document.querySelector('.canvas-container').clientHeight;
     setImgCanvBg();
     drawDetails();
+}
+
+function canvasClicked(ev) {
+    // Find out if clicked on a line
+    const clickedLine = gMeme.lines.find(line => {
+        return (
+            ev.offsetX > line.x &&
+            ev.offsetX < line.x + getTextWidth(line) &&
+            ev.offsetY < line.y &&
+            ev.offsetY > line.y - line.size * 1.3
+        )
+    })
+
+    // Open the modal on the clicked coordinates if found a click on a star,
+    //       close the modal otherwise
+    if (clickedLine) {
+        forceFocus(clickedLine);
+        updateEditorPerLine(getCurrLine());
+    }
 }
 
 function openGallery(isMyGallery) {
@@ -159,7 +178,10 @@ function renderImg(isMyGallery) {
     if (isMyGallery) {
         let imgs = getMyImgs()
         let galleryImgs = imgs.map(img => {
-            return `<div class="meme-img"><img class="card" src="${img.url}" alt="Err" data-id="${img.id}" onclick="onOpenNewTab(${img.id})"/><button class="btn-del" onclick="onDelMeme(this)">X</button></div>`
+            return `<div class="meme-img"><img class="card" src="${img.url}" alt="Err" data-id="${img.id}" 
+            onclick="onOpenNewTab(${img.id})"/>
+            <button class="btn-del btn-del${img.id}" onclick="onDelMeme(this)">X</button>
+            </div>`
         })
         document.querySelector('.gallery').innerHTML = galleryImgs.join('');
     } else {
@@ -193,7 +215,28 @@ function toggleMenu() {
 }
 
 function toggleModal() {
-    document.body.classList.toggle('open-modal');
+    document.querySelector('.modal-container').classList.toggle('modal-showed');
+}
+
+function onOpenModal(data) {
+    toggleModal();
+    const elModal = document.querySelector('.modal-container');
+    switch(data) {
+        case 'about': 
+            renderAbout(elModal);
+            break;
+        case 'showImg':
+            renderImgModal(elModal);
+    }
+    doTrans();
+}
+
+function renderAbout(elModal) {
+    elModal.innerHTML = `<about class="flex column">
+    <img src="img/logo/LOGO.png" alt="MEMEGEN" />
+    <p data-trans="about-des1"></p>
+    <p data-trans="about-des2"></p>
+    </about>`
 }
 
 window.document.oncontextmenu = function () {
