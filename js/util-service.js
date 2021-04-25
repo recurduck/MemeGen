@@ -32,7 +32,6 @@ function elFadeIn(elClass) {
     document.querySelector(elClass).classList.add('visible') 
 }
 
-
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);

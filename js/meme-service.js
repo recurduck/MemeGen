@@ -6,10 +6,11 @@ const IMAGESFILE = 18
 
 var gMemes;
 var gImg = _loadImgs()
-var gKeyswords = { 'happy': 12, 'funny': 1 };
+var gKeysWords = { 'happy': 12, 'funny': 1, 'sad': 3, 'politic': 10, 'animals': 5, 'movies': 7 };
 
 var gMeme = {
     selectedImgId: 5,
+    customImgUrl: '',
     selectedLineIdx: 0,
     lines: [{
         txt: 'Inever eat Falafel',
@@ -20,8 +21,6 @@ var gMeme = {
         underline: false,
         x: 25,
         y: 80,
-        // endX: 50 + gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
-        // endY: 50 + gCtx.measureText(gMeme.lines[gMeme.selectedLineIdx].txt).width
         isOnFocus: true,
         isDragging: false
     },
@@ -40,6 +39,21 @@ var gMeme = {
     ]
 }
 _createMemes();
+
+function getKeyWords() {
+    return gKeysWords
+}
+function sortKeyWords() {
+    var keys = getKeyWords();
+    var sortedKeyWords = [];
+    for (var keyWord in keys) {
+        sortedKeyWords.push([keyWord, keys[keyWord]]);
+    }
+    return sortedKeyWords.sort((a, b) => b[1] - a[1])
+}
+function riseKeyword(keyWord) {
+    if(gKeysWords[keyWord] < 30) gKeysWords[keyWord]++;
+}
 
 function changeFontFamily(fontFamily) {
     gMeme.lines[gMeme.selectedLineIdx].family = fontFamily;
@@ -89,7 +103,6 @@ function nextLine() {
 function forceFocus(forcedLine) {
     let newFocusedLineIdx = gMeme.lines.findIndex(line => line === forcedLine)
     gMeme.lines[gMeme.selectedLineIdx].isOnFocus = false
-    console.log('newFocusedLine:', newFocusedLineIdx)
     gMeme.selectedLineIdx = newFocusedLineIdx
     forcedLine.isOnFocus = true
     drawDetails();
@@ -139,8 +152,14 @@ function drawDetails(isEditing = true) {
     drawText(isEditing);
 }
 
-function setImgCanvBg() {
-    gCanvas.style = `background-image: url("img/memes/${gMeme.selectedImgId}.jpg");background-size: ${gCanvas.width}px ${gCanvas.height}px;`
+function setImgCanvBg(img, uploaded = false) {
+    if (uploaded) {
+        gMeme.customImgUrl = img.src
+        gCanvas.style = `background-image: url(${img.src}); background-size: ${gCanvas.width}px ${gCanvas.height}px;`
+        drawDetails(false);
+    } else {
+        gCanvas.style = `background-image: url("img/memes/${gMeme.selectedImgId}.jpg");background-size: ${gCanvas.width}px ${gCanvas.height}px;`
+    }
 }
 
 function drawText(isEditing = true) {
@@ -156,13 +175,13 @@ function drawText(isEditing = true) {
             let space = gMeme.lines[gMeme.selectedLineIdx].size * 0.15;
             switch (gCtx.textAlign) {
                 case 'left':
-                    drawLine(line.x, line.y + space, line.x + gCtx.measureText(line.txt).width, line.y + space, line.color);
+                    drawLine(line.x, line.y + space, line.x + textWidth(line), line.y + space, line.color);
                     break;
                 case 'center':
-                    drawLine(line.x - gCtx.measureText(line.txt).width / 2, line.y + space, line.x + gCtx.measureText(line.txt).width / 2, line.y + space, line.color);
+                    drawLine(line.x - textWidth(line) / 2, line.y + space, line.x + textWidth(line) / 2, line.y + space, line.color);
                     break;
                 case 'right':
-                    drawLine(line.x, line.y + space, line.x - gCtx.measureText(line.txt).width, line.y + space, line.color);
+                    drawLine(line.x, line.y + space, line.x - textWidth(line), line.y + space, line.color);
             }
         }
         if (line.isOnFocus && isEditing) {
@@ -200,9 +219,12 @@ function saveMeme() {
 
 function finalizeMeme() {
     const elImg = new Image()
-    elImg.src = `img/memes/${gMeme.selectedImgId}.jpg`;
+    elImg.src = (gMeme.selectedImgId > 0) ? `img/memes/${gMeme.selectedImgId}.jpg` : gMeme.customImgUrl;
+    const elQR = new Image();
+    elQR.src = 'img/qrcode.png';
     elImg.onload = () => {
         gCtx.drawImage(elImg, 0, 0, gCanvas.width, gCanvas.height);
+        gCtx.drawImage(elQR, gCanvas.width-75, gCanvas.height-75, 75, 75);
         drawDetails(false);
     }
 }
@@ -235,10 +257,12 @@ function createNewLine() {
         isDragging: false
     }
 }
+
 // return My Memes
 function getMyImgs() {
     return gMemes;
 }
+
 // return all Imgs
 function getImgs() {
     return gImg;
@@ -263,7 +287,7 @@ function memeValforDownload(elLink) {
     elLink.download = `MEME-${makeId(4)}`;
 }
 
-function getTextWidth(line) {
+function textWidth(line) {
     return gCtx.measureText(line.txt).width;
 }
 
@@ -273,7 +297,6 @@ function getMemeIndexByID(memeId) {
 
 function deleteMeme(memeId) {
     let memeIdx = getMemeIndexByID(memeId);
-    console.log('memeIdx:', memeIdx)
     if (memeIdx > -1) {
         gMemes.splice(memeIdx, 1)
         _saveMemesToStorage();

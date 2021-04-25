@@ -5,6 +5,7 @@ var gCanvas;
 var gCtx;
 
 function init() {
+    renderKeysWords();
     doTrans();
     renderImg();
 }
@@ -121,7 +122,7 @@ function updateEditorPerLine(line) {
     document.querySelector('.brush').style = `fill: ${line.color}`;
 }
 
-function renderCanvas() {
+function renderCanvas(img, uploaded) {
     var strHtml = `<canvas id="my-meme" onclick="canvasClicked(event)">
     </canvas>`;
     document.querySelector('.canvas-container').innerHTML = strHtml;
@@ -129,8 +130,13 @@ function renderCanvas() {
     gCtx = gCanvas.getContext('2d');
     gCanvas.width = document.querySelector('.canvas-container').clientWidth;
     gCanvas.height = document.querySelector('.canvas-container').clientHeight;
-    setImgCanvBg();
-    drawDetails();
+    if (uploaded) {
+        setImgCanvBg(img, uploaded);
+        drawDetails();
+    } else {
+        setImgCanvBg();
+        drawDetails();
+    }
 }
 
 function canvasClicked(ev) {
@@ -138,7 +144,7 @@ function canvasClicked(ev) {
     const clickedLine = gMeme.lines.find(line => {
         return (
             ev.offsetX > line.x &&
-            ev.offsetX < line.x + getTextWidth(line) &&
+            ev.offsetX < line.x + textWidth(line) &&
             ev.offsetY < line.y &&
             ev.offsetY > line.y - line.size * 1.3
         )
@@ -161,17 +167,21 @@ function openGallery(isMyGallery) {
     elFadeIn('.container-gallery');
 }
 
-function openMemeEditor(elImg) {
-    setNewImg(elImg.dataset.id)
-    renderCanvas(elImg.dataset.id);
-    // editorInit();
+function openMemeEditor(elImg, uploaded) {
+    if (uploaded) {
+        setNewImg(0)
+        renderCanvas(elImg, uploaded);
+    } else {
+        setNewImg(elImg.dataset.id)
+        renderCanvas();
+    }
     elFadeIn('.modal-edit');
     updateEditorPerLine(getCurrLine())
 }
 
-function onOpenMemeEditor(elImg) {
+function onOpenMemeEditor(elImg, uploaded = false) {
     elFadeOut('.container-gallery');
-    openMemeEditor(elImg)
+    openMemeEditor(elImg, uploaded)
 }
 
 function renderImg(isMyGallery) {
@@ -179,7 +189,7 @@ function renderImg(isMyGallery) {
         let imgs = getMyImgs()
         let galleryImgs = imgs.map(img => {
             return `<div class="meme-img"><img class="card" src="${img.url}" alt="Err" data-id="${img.id}" 
-            onclick="onOpenNewTab(${img.id})"/>
+            onclick="onOpenModal('show', this)"/>
             <button class="btn-del btn-del${img.id}" onclick="onDelMeme(this)">X</button>
             </div>`
         })
@@ -218,25 +228,75 @@ function toggleModal() {
     document.querySelector('.modal-container').classList.toggle('modal-showed');
 }
 
-function onOpenModal(data) {
+function onOpenModal(data, elImg) {
     toggleModal();
     const elModal = document.querySelector('.modal-container');
-    switch(data) {
-        case 'about': 
+    switch (data) {
+        case 'about':
             renderAbout(elModal);
             break;
-        case 'showImg':
-            renderImgModal(elModal);
+        case 'show':
+            renderImgModal(elModal, elImg);
     }
     doTrans();
+    toggleMenu();
+}
+
+function renderImgModal(elModal, img) {
+    elModal.innerHTML = `<div class="flex column align-center">
+    <img src="${img.src}" alt="MEMEGEN" />
+    <a class="btn-download flex space-around align-center" href="${img.src}" download="MEME-${makeId(4)}">
+        <img src="./img/icons/download.png">
+        <span data-trans="download"></span>
+    </a>
+    </div>`
 }
 
 function renderAbout(elModal) {
     elModal.innerHTML = `<about class="flex column">
-    <img src="img/logo/LOGO.png" alt="MEMEGEN" />
+    <img src="img/logo/LOGO.png" alt="MEMEGEN" width="80%"/>
     <p data-trans="about-des1"></p>
     <p data-trans="about-des2"></p>
     </about>`
+}
+
+// The next 2 functions handle IMAGE UPLOADING to img tag from file system: 
+function onImgInput(ev) {
+    loadImageFromInput(ev, renderUploadedImg)
+}
+
+function loadImageFromInput(ev, onImageReady) {
+    var reader = new FileReader()
+
+    reader.onload = function (event) {
+        var img = new Image()
+        img.onload = onImageReady.bind(null, img)
+        img.src = event.target.result
+    }
+    reader.readAsDataURL(ev.target.files[0])
+}
+
+function renderUploadedImg(img) {
+    onOpenMemeEditor(img, true)
+}
+
+// Keywords
+// Render KewsWords
+function renderKeysWords() {
+    var words = sortKeyWords()
+    var tags = document.querySelector('.tags-container')
+    tags.innerHTML = ''
+    words.forEach(word => {
+        tags.innerHTML += `<span style="font-size: ${4+word[1]}px" onclick="onKeyWordClick(this)" data-trans="${word[0]}"></span>`
+    })
+    doTrans();
+}
+
+function onKeyWordClick(elKey) {
+    let keyWord = elKey.dataset.trans;
+    console.log('keyWord:', keyWord)
+    riseKeyword(keyWord)
+    renderKeysWords();
 }
 
 window.document.oncontextmenu = function () {
