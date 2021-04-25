@@ -454,7 +454,7 @@ input[type="file"] {
 /* Modal */
 .modal-container {
     transition: 1s;
-    top: -100%;
+    top: -150%;
     position: absolute;
     height: 95vh;
     width: 98vw;
